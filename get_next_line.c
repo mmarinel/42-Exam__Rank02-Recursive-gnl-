@@ -6,7 +6,7 @@
 /*   By: mmarinel <mmarinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 14:14:55 by mmarinel          #+#    #+#             */
-/*   Updated: 2022/01/21 20:03:08 by mmarinel         ###   ########.fr       */
+/*   Updated: 2022/01/21 20:12:46 by mmarinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,12 @@ unsigned int	ft_get_line(char **str, int fd)
 	if (!offset || offset == BUFFER_SIZE - 1)
 	{
 		free(buf);
-		if (!offset
-			&& !ft_get_line_rec(str, &str_rest, &res, fd))
-			return (0);
+		if (!offset)
+		{
+			offset = 0;
+			if(!ft_get_line_rec(str, &str_rest, &res, fd))
+				return (0);
+		}
 	}
 	return (1);
 }
