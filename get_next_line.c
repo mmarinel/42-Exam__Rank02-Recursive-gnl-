@@ -6,7 +6,7 @@
 /*   By: mmarinel <mmarinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 14:14:55 by mmarinel          #+#    #+#             */
-/*   Updated: 2022/01/21 20:12:46 by mmarinel         ###   ########.fr       */
+/*   Updated: 2022/01/23 00:45:35 by mmarinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,31 +27,47 @@ char	*get_next_line(int fd)
 
 unsigned int	ft_get_line(char **str, int fd)
 {
-	static char			*buf;
-	static unsigned int	offset;
+	static t_fd_buffer	*fd_buf;
 	unsigned int		str_len;
 	char				*str_rest;
 	char				*res;
 
-	if (!offset)
+	if (!fd_buf)
 	{
-		buf = (char *) malloc((BUFFER_SIZE + 1) * sizeof(char));
-		if (read(fd, buf, BUFFER_SIZE) <= 0)
-			return (0);
+		printf("Here!\n");
+		fd_buf = (t_fd_buffer *) malloc(sizeof(t_fd_buffer));
+		fd_buf->offset = 0;
 	}
-	str_len = ft_line_len(buf + offset, BUFFER_SIZE - offset);
-	*str = (char *) malloc((str_len + 1) * sizeof(char));
-	ft_strlcpy(str, buf + offset, str_len);
-	offset = (offset + str_len) % BUFFER_SIZE;
-	if (!offset || offset == BUFFER_SIZE - 1)
+	if (!fd_buf->offset)
 	{
-		free(buf);
-		if (!offset)
+		fd_buf->buf = (char *) malloc((BUFFER_SIZE + 1) * sizeof(char));
+		ft_memset(fd_buf->buf, '\0', BUFFER_SIZE + 1);
+		fd_buf->bytes_read = read(fd, fd_buf->buf, BUFFER_SIZE);
+		if (fd_buf->bytes_read <= 0)
 		{
-			offset = 0;
-			if(!ft_get_line_rec(str, &str_rest, &res, fd))
+			free(fd_buf->buf);
+			if (fd_buf->bytes_read < 0)
 				return (0);
+			*str = NULL;
+			return (1);
 		}
+	}
+	else
+		fd_buf->offset++;
+	str_len = ft_line_len(fd_buf->buf + fd_buf->offset,
+			BUFFER_SIZE - fd_buf->offset);
+	*str = (char *) malloc((str_len + 2) * sizeof(char));
+	ft_strlcpy(str, fd_buf->buf + fd_buf->offset, str_len);
+	fd_buf->offset = (fd_buf->offset + str_len) % BUFFER_SIZE;
+	if (!fd_buf->offset
+		|| (fd_buf->offset < BUFFER_SIZE - 1
+			&& fd_buf->buf[fd_buf->offset + 1] == '\0'))
+	{
+		free(fd_buf->buf);
+		if (!fd_buf->offset)
+			if (!ft_get_line_rec(str, &str_rest, &res, fd))
+				return (0);
+		fd_buf->offset = 0;
 	}
 	return (1);
 }
@@ -82,6 +98,7 @@ int	main(int argc, char const *argv[])
 	const char	*file_path;
 	char		*line;
 	int			fd;
+	int			i = 0;
 
 	if (argc == 2)
 	{
@@ -90,7 +107,10 @@ int	main(int argc, char const *argv[])
 		if (fd < 0)
 			return (0);
 		while ((line = get_next_line(fd)) != NULL)
+		{
 			printf("found line: %s\n", line);
+			i++;	
+		}
 	}
 	return (0);
 }

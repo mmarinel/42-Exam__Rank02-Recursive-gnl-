@@ -6,7 +6,7 @@
 /*   By: mmarinel <mmarinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:31 by mmarinel          #+#    #+#             */
-/*   Updated: 2022/01/21 19:06:48 by mmarinel         ###   ########.fr       */
+/*   Updated: 2022/01/22 22:35:50 by mmarinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ size_t	ft_strlcpy(char **dst, const char *src, size_t dstsize)
 	if (dstsize)
 	{
 		*dst = (char *) malloc((dstsize + 1) * sizeof(char));
-		while (src[i] != '\0' && i < (dstsize - 1))
+		while (src[i] != '\0' && i < dstsize)
 		{
 			*(*dst + i) = src[i];
 			i++;
@@ -38,8 +38,10 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	size_t	s2_len;
 	char	*s_join;
 
-	if (!s1 || !s2)
-		return (NULL);
+	if (!s1)
+		return (ft_strjoin(s2, ""));
+	if (!s2)
+		return (ft_strjoin(s1, ""));
 	s1_len = ft_strlen(s1);
 	s2_len = ft_strlen(s2);
 	s_join = (char *) malloc((s1_len + s2_len + 1) * sizeof(char));
@@ -78,4 +80,16 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 		i++;
 	}
 	return (dst);
+}
+
+void	*ft_memset(void *b, int c, size_t len)
+{
+	size_t			i;
+	unsigned char	*s;
+
+	i = 0;
+	s = b;
+	while (i < len)
+		s[i++] = c;
+	return (b);
 }
