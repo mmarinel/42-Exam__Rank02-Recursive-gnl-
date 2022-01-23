@@ -6,7 +6,7 @@
 /*   By: mmarinel <mmarinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 14:14:58 by mmarinel          #+#    #+#             */
-/*   Updated: 2022/01/22 23:09:59 by mmarinel         ###   ########.fr       */
+/*   Updated: 2022/01/23 17:08:45 by mmarinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 
 # include <unistd.h>
 # include <stdlib.h>
-# include <fcntl.h>
-# include <stdio.h>
+# include <fcntl.h> // DA TOGLIERE
+# include <stdio.h> // DA TOGLIERE
 
-// # define BUFFER_SIZE 3
+// # define BUFFER_SIZE 42
 # define READ_ERROR -1
 
 typedef struct s_fd_buffer {

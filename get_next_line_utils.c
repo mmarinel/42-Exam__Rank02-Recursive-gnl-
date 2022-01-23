@@ -6,7 +6,7 @@
 /*   By: mmarinel <mmarinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:31 by mmarinel          #+#    #+#             */
-/*   Updated: 2022/01/22 22:35:50 by mmarinel         ###   ########.fr       */
+/*   Updated: 2022/01/23 17:23:27 by mmarinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,15 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	s_join = (char *) malloc((s1_len + s2_len + 1) * sizeof(char));
 	if (s_join == NULL)
 		return (NULL);
-	return ((char *) ft_memcpy(
+	s_join = (char *) ft_memcpy(
 			ft_memcpy(s_join, s1, s1_len) + s1_len,
 			s2,
-			s2_len + 1) - s1_len);
+			s2_len + 1) - s1_len;
+	if (*s1 != '\0')
+		free((char *) s1);
+	if (*s2 != '\0')
+		free((char *) s2);
+	return (s_join);
 }
 
 size_t	ft_strlen(const char *str)
