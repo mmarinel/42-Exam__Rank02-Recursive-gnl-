@@ -6,15 +6,15 @@
 /*   By: mmarinel <mmarinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 14:14:55 by mmarinel          #+#    #+#             */
-/*   Updated: 2022/01/23 00:45:35 by mmarinel         ###   ########.fr       */
+/*   Updated: 2022/01/23 12:58:43 by mmarinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 unsigned int	ft_get_line(char **str, int fd);
-unsigned int	ft_get_line_rec(char **s1, char **s2, char **res, int fd);
-unsigned int	ft_line_len(char *line, unsigned int max_len);
+unsigned int	ft_get_line_rec(char **s1, char **s2, char **res, int fd, t_fd_buffer *fd_buf);
+unsigned int	ft_line_len(char *line, unsigned int max_len, int *nl_found);
 
 char	*get_next_line(int fd)
 {
@@ -31,6 +31,7 @@ unsigned int	ft_get_line(char **str, int fd)
 	unsigned int		str_len;
 	char				*str_rest;
 	char				*res;
+	int					nl_found;
 
 	if (!fd_buf)
 	{
@@ -51,29 +52,30 @@ unsigned int	ft_get_line(char **str, int fd)
 			*str = NULL;
 			return (1);
 		}
+		// printf("BUFFER: %s\n", fd_buf->buf);
 	}
-	else
-		fd_buf->offset++;
+	nl_found = 0;
 	str_len = ft_line_len(fd_buf->buf + fd_buf->offset,
-			BUFFER_SIZE - fd_buf->offset);
-	*str = (char *) malloc((str_len + 2) * sizeof(char));
+			BUFFER_SIZE - fd_buf->offset, &nl_found);
+	*str = (char *) malloc((str_len + 1) * sizeof(char));
 	ft_strlcpy(str, fd_buf->buf + fd_buf->offset, str_len);
 	fd_buf->offset = (fd_buf->offset + str_len) % BUFFER_SIZE;
-	if (!fd_buf->offset
-		|| (fd_buf->offset < BUFFER_SIZE - 1
-			&& fd_buf->buf[fd_buf->offset + 1] == '\0'))
+	if (!fd_buf->offset || (nl_found && fd_buf->buf[fd_buf->offset] == '\0'))
 	{
+		// printf("BUFFER: %s, ultima pos: %c\n", fd_buf->buf, fd_buf->buf[fd_buf->offset]);
 		free(fd_buf->buf);
-		if (!fd_buf->offset)
-			if (!ft_get_line_rec(str, &str_rest, &res, fd))
+		if (!fd_buf->offset && !nl_found)
+		{
+			if (!ft_get_line_rec(str, &str_rest, &res, fd, fd_buf))
 				return (0);
-		fd_buf->offset = 0;
+		}
 	}
 	return (1);
 }
 
-unsigned int	ft_get_line_rec(char **s1, char **s2, char **res, int fd)
+unsigned int	ft_get_line_rec(char **s1, char **s2, char **res, int fd, t_fd_buffer *fd_buf)
 {
+	fd_buf->offset = 0;
 	if (!ft_get_line(s2, fd))
 		return (0);
 	*res = ft_strjoin(*s1, *s2);
@@ -83,34 +85,39 @@ unsigned int	ft_get_line_rec(char **s1, char **s2, char **res, int fd)
 	return (1);
 }
 
-unsigned int	ft_line_len(char *line, unsigned int max_len)
+unsigned int	ft_line_len(char *line, unsigned int max_len, int *nl_found)
 {
 	unsigned long long	i;
 
 	i = 0;
 	while (i < max_len && line[i] != '\n')
 		i++;
+	if (i < max_len)
+	{
+		*nl_found = 1;
+		return (i + 1);
+	}
 	return (i);
 }
 
-int	main(int argc, char const *argv[])
-{
-	const char	*file_path;
-	char		*line;
-	int			fd;
-	int			i = 0;
+// int	main(int argc, char const *argv[])
+// {
+// 	const char	*file_path;
+// 	char		*line;
+// 	int			fd;
+// 	int			i = 0;
 
-	if (argc == 2)
-	{
-		file_path = *(argv + 1);
-		fd = open(file_path, O_RDONLY | O_CREAT);
-		if (fd < 0)
-			return (0);
-		while ((line = get_next_line(fd)) != NULL)
-		{
-			printf("found line: %s\n", line);
-			i++;	
-		}
-	}
-	return (0);
-}
+// 	if (argc == 2)
+// 	{
+// 		file_path = *(argv + 1);
+// 		fd = open(file_path, O_RDONLY | O_CREAT);
+// 		if (fd < 0)
+// 			return (0);
+// 		while ((line = get_next_line(fd)) != NULL)
+// 		{
+// 			printf("found line: %s\n", line);
+// 			i++;	
+// 		}
+// 	}
+// 	return (0);
+// }
