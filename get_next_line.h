@@ -6,7 +6,7 @@
 /*   By: mmarinel <mmarinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 14:14:58 by mmarinel          #+#    #+#             */
-/*   Updated: 2022/05/21 20:47:10 by mmarinel         ###   ########.fr       */
+/*   Updated: 2022/05/21 22:41:33 by mmarinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,16 @@ typedef struct s_fd_buffer {
 	ssize_t			bytes_read;
 }	t_fd_buffer;
 
+typedef enum e_bool
+{
+	e_true = 1,
+	e_false = 0
+}	t_bool;
+
 char	*get_next_line(int fd);
+void	ft_strcpy(char *dst, char *src);
 size_t	ft_strlcpy(char **dst, const char *src, size_t dstsize);
-char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin(char const *pre, char const *post, t_bool free_pre, t_bool free_post);
 size_t	ft_strlen(const char *str);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 void	*ft_memset(void *b, int c, size_t len);

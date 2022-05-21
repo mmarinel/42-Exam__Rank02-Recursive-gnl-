@@ -6,7 +6,7 @@
 /*   By: mmarinel <mmarinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:31 by mmarinel          #+#    #+#             */
-/*   Updated: 2022/01/23 17:23:27 by mmarinel         ###   ########.fr       */
+/*   Updated: 2022/05/21 22:47:11 by mmarinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ size_t	ft_strlcpy(char **dst, const char *src, size_t dstsize)
 	i = 0;
 	if (dstsize)
 	{
+		// printf("dstsize: %zu\n", dstsize);
+		// fflush(stdout);
 		*dst = (char *) malloc((dstsize + 1) * sizeof(char));
 		while (src[i] != '\0' && i < dstsize)
 		{
@@ -32,29 +34,27 @@ size_t	ft_strlcpy(char **dst, const char *src, size_t dstsize)
 	return ((size_t) i);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char const *pre, char const *post, t_bool free_pre, t_bool free_post)
 {
-	size_t	s1_len;
-	size_t	s2_len;
+	size_t	pre_len;
+	size_t	post_len;
 	char	*s_join;
 
-	if (!s1)
-		return (ft_strjoin(s2, ""));
-	if (!s2)
-		return (ft_strjoin(s1, ""));
-	s1_len = ft_strlen(s1);
-	s2_len = ft_strlen(s2);
-	s_join = (char *) malloc((s1_len + s2_len + 1) * sizeof(char));
+	if (!pre)
+		return (ft_strjoin(post, "", free_post, e_false));
+	if (!post)
+		return (ft_strjoin(pre, "", free_pre, e_false));
+	pre_len = ft_strlen(pre);
+	post_len = ft_strlen(post);
+	s_join = (char *) malloc((pre_len + post_len + 1) * sizeof(char));
 	if (s_join == NULL)
 		return (NULL);
-	s_join = (char *) ft_memcpy(
-			ft_memcpy(s_join, s1, s1_len) + s1_len,
-			s2,
-			s2_len + 1) - s1_len;
-	if (*s1 != '\0')
-		free((char *) s1);
-	if (*s2 != '\0')
-		free((char *) s2);
+	ft_strcpy((char *) s_join, (char *) pre);
+	ft_strcpy((char *) s_join + pre_len, (char *) post);
+	if (free_pre && pre)
+		free((char *) pre);
+	if (free_post && post)
+		free((char *) post);
 	return (s_join);
 }
 
@@ -68,23 +68,17 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-void	*ft_memcpy(void *dst, const void *src, size_t n)
+void	ft_strcpy(char *dst, char *src)
 {
-	const char	*ptr_src;
-	char		*ptr_dest;
-	size_t		i;
+	int	i;
 
-	ptr_dest = dst;
-	ptr_src = src;
 	i = 0;
-	if (dst == NULL && src == NULL)
-		return (dst);
-	while (i < n)
+	while (src[i])
 	{
-		ptr_dest[i] = ptr_src[i];
+		dst[i] = src[i];
 		i++;
 	}
-	return (dst);
+	dst[i] = src[i];
 }
 
 void	*ft_memset(void *b, int c, size_t len)
