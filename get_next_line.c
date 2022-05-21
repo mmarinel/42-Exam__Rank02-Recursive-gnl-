@@ -6,7 +6,7 @@
 /*   By: mmarinel <mmarinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 16:07:21 by mmarinel          #+#    #+#             */
-/*   Updated: 2022/01/23 17:39:27 by mmarinel         ###   ########.fr       */
+/*   Updated: 2022/05/21 20:50:23 by mmarinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ int	main(int argc, char const *argv[])
 		while ((line = get_next_line(fd)) != NULL)
 		{
 			printf("found line: %s\n", line);
+			sleep(1);
 			i++;	
 		}
 	}

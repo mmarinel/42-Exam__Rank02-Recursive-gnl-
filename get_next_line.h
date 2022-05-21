@@ -6,7 +6,7 @@
 /*   By: mmarinel <mmarinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 14:14:58 by mmarinel          #+#    #+#             */
-/*   Updated: 2022/01/23 17:08:45 by mmarinel         ###   ########.fr       */
+/*   Updated: 2022/05/21 20:47:10 by mmarinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@
 # include <fcntl.h> // DA TOGLIERE
 # include <stdio.h> // DA TOGLIERE
 
+#ifndef BUFFER_SIZE
+# define BUFFER_SIZE 42
+#endif
 // # define BUFFER_SIZE 42
 # define READ_ERROR -1
 
