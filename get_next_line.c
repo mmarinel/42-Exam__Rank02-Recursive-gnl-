@@ -6,7 +6,7 @@
 /*   By: mmarinel <mmarinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 16:07:21 by mmarinel          #+#    #+#             */
-/*   Updated: 2022/05/21 23:39:04 by mmarinel         ###   ########.fr       */
+/*   Updated: 2022/05/22 09:44:57 by mmarinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ char	*get_next_line(int fd)
 
 	// printf("\nNEW BEGINNING\n");
 	// fflush(stdout);
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
 	if (!offset)
 	{
 		if (e_false == gnl_buffer_read_from_file(&buf, fd, 0))
@@ -135,26 +137,26 @@ static t_bool	gnl_get_line_from_buffer(char **buf, int *offset, char **str, int 
 // 	return (i);
 // }
 
-int	main(int argc, char const *argv[])
-{
-	const char	*file_path;
-	char		*line;
-	int			fd;
-	int			i = 0;
+// int	main(int argc, char const *argv[])
+// {
+// 	const char	*file_path;
+// 	char		*line;
+// 	int			fd;
+// 	int			i = 0;
 
-	if (argc == 2)
-	{
-		file_path = *(argv + 1);
-		fd = open(file_path, O_RDONLY | O_CREAT);
-		if (fd < 0)
-			return (0);
-		do
-		{
-			line = get_next_line(fd);
-			printf("found line: %s\n", line);
-			sleep(1);
-			i++;
-		} while (line);
-	}
-	return (0);
-}
+// 	if (argc == 2)
+// 	{
+// 		file_path = *(argv + 1);
+// 		fd = open(file_path, O_RDONLY | O_CREAT);
+// 		if (fd < 0)
+// 			return (0);
+// 		do
+// 		{
+// 			line = get_next_line(fd);
+// 			printf("found line: %s\n", line);
+// 			sleep(1);
+// 			i++;
+// 		} while (line);
+// 	}
+// 	return (0);
+// }
