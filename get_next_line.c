@@ -6,19 +6,28 @@
 /*   By: mmarinel <mmarinel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 16:07:21 by mmarinel          #+#    #+#             */
-/*   Updated: 2022/05/22 09:44:57 by mmarinel         ###   ########.fr       */
+/*   Updated: 2022/05/22 10:08:29 by mmarinel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-unsigned int	ft_get_line(char *buf, unsigned int max_len,
-					int *nl_found, char **line);
+static char	*get_next_line_rec(int fd, int *buffer_size);
+
 
 static t_bool	gnl_buffer_read_from_file(char **buf, int fd, int buffer_size);
 static t_bool	gnl_get_line_from_buffer(char **buf, int *offset, char **str, int buffer_size);
 
 char	*get_next_line(int fd)
+{
+	static int	buffer_size = BUFFER_SIZE;
+
+	if (fd < 0 || buffer_size <= 0)
+		return (NULL);
+	return (get_next_line_rec(fd, &buffer_size));
+}
+
+static char	*get_next_line_rec(int fd, int *buffer_size)
 {
 	static char	*buf;
 	static int	offset;
@@ -27,19 +36,17 @@ char	*get_next_line(int fd)
 
 	// printf("\nNEW BEGINNING\n");
 	// fflush(stdout);
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
 	if (!offset)
 	{
-		if (e_false == gnl_buffer_read_from_file(&buf, fd, 0))
+		if (e_false == gnl_buffer_read_from_file(&buf, fd, *buffer_size))
 			return (NULL);
 		// printf("\nOFFSET IS 0\n");
 	}
-	nl_found = gnl_get_line_from_buffer(&buf, &offset, &str, 0);
+	nl_found = gnl_get_line_from_buffer(&buf, &offset, &str, *buffer_size);
 	// printf("str: %s\nnl_found: %d\n", str, nl_found);
 	// exit(0);
 	// offset = (offset + ft_get_line(buf + offset,
-	// 			BUFFER_SIZE - offset, &nl_found, &str)) % BUFFER_SIZE;
+	// 			buffer_size - offset, &nl_found, &str)) % buffer_size;
 	if (!offset || (offset && buf[offset] == '\0'))
 	{
 		free(buf);
@@ -47,7 +54,9 @@ char	*get_next_line(int fd)
 		{
 			// printf("HEREHERE\n");
 			// fflush(stdout);
-			return (ft_strjoin(str, get_next_line(fd), e_true, e_true));
+			*buffer_size = *buffer_size + 5;
+			return (ft_strjoin(str, get_next_line_rec(fd, buffer_size),
+						e_true, e_true));
 		}
 		offset = 0;
 	}
@@ -57,11 +66,9 @@ char	*get_next_line(int fd)
 
 static t_bool	gnl_buffer_read_from_file(char **buf, int fd, int buffer_size)
 {
-	if (buffer_size)
-		;
-	*buf = (char *) malloc((BUFFER_SIZE + 1) * sizeof(char));
-	ft_memset(*buf, '\0', BUFFER_SIZE + 1);
-	if (read(fd, *buf, BUFFER_SIZE) <= 0)
+	*buf = (char *) malloc((buffer_size + 1) * sizeof(char));
+	ft_memset(*buf, '\0', buffer_size + 1);
+	if (read(fd, *buf, buffer_size) <= 0)
 	{
 		free(*buf);
 		return (e_false);
@@ -76,12 +83,10 @@ static t_bool	gnl_get_line_from_buffer(char **buf, int *offset, char **str, int 
 	int		buffer_start;
 	int		i;
 
-	if (buffer_size)
-		;
 	nl_found = e_false;
 	i = *offset;
 	buffer_start = *offset;
-	while (i < BUFFER_SIZE)
+	while (i < buffer_size)
 	{
 		if ((*buf)[i] == '\n'
 			|| (*buf)[i] == '\0')
@@ -104,15 +109,15 @@ static t_bool	gnl_get_line_from_buffer(char **buf, int *offset, char **str, int 
 		line_len = i - *offset + 1;
 		// *offset = (i + 1);
 	}
-	if (i == BUFFER_SIZE
-		|| i == BUFFER_SIZE - 1
+	if (i == buffer_size
+		|| i == buffer_size - 1
 		|| (*buf)[i] == '\0')
 	{
 		// printf("MAOMETTO ER KETCHUP ?\n");
 		*offset = 0;
 	}
 	else
-		*offset = (i + 1) % BUFFER_SIZE;
+		*offset = (i + 1) % buffer_size;
 	// printf("i: %d\nline_len: %d\noffset: %d\nnl_found: %d\n", i, line_len, *offset, nl_found);
 	// fflush(stdout);
 	ft_strlcpy(str, *buf + buffer_start, line_len);
