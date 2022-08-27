@@ -11,7 +11,7 @@ For a detailed explanation of the problem you can read the [Subject.txt] present
 
 1. [The fd_buffer structure](https://github.com/mmarinel/42-Exam__Rank02-Recursive-gnl-#the-fd_buffer-structure)
 2. [The recursive algorithm](https://github.com/mmarinel/42-Exam__Rank02-Recursive-gnl-#the-recursive-algorithm)
-3. [The shrinking and expanding of the buffer size](https://github.com/mmarinel/42-Exam__Rank02-Recursive-gnl-#the-shrinking-and-expading-of-the-buffer-size)
+3. [The shrinking and expanding of the buffer size](https://github.com/mmarinel/42-Exam__Rank02-Recursive-gnl-#the-shrinking-and-expanding-of-the-buffer-size)
 
 ## The fd_buffer structure
 I decided to wrap my buffer inside a structure which has the following informations: 
