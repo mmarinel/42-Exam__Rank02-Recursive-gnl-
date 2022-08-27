@@ -32,7 +32,7 @@ The idea can be condensed in the following 3 steps:
 ## The shrinking and expanding of the buffer size
 Now, there is just one problem. As you may already know, the beauty of recursion (and the beauty of recursive code) comes with a cost, this cost being efficiency. There are cases where recursion can be an excellent solution to our problems and cases where the depth of the recursive calls can bear a significant overhead over our machine (each call adds a frame on the stack, and when we have too many calls we may even reach a stack overflow!).
 
-So, how to make out get_next_line more efficient? Think about it for a second, what does it cause our function to call itself recursively? ...Gotcha!...The inability to store enough characters before the next new line is found!
+So, how to make our get_next_line more efficient? Think about it for a second, what does it cause our function to call itself recursively? ...Gotcha!...The inability to store enough characters before the next new line is found!
 
 So, a possible solution is this: whenever we are heading towards a next recursive call, we increase our buffer size by a constant value so to decrease the probability of going recursively again with the next call!
 
