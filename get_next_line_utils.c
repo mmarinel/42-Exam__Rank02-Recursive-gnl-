@@ -3,36 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmarinel <mmarinel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: earendil <earendil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:31 by mmarinel          #+#    #+#             */
-/*   Updated: 2022/05/22 10:27:12 by mmarinel         ###   ########.fr       */
+/*   Updated: 2022/08/27 00:03:04 by earendil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-// size_t	ft_strlcpy(char **dst, const char *src, size_t dstsize)
-// {
-// 	unsigned long	i;
-
-// 	i = 0;
-// 	if (dstsize)
-// 	{
-// 		// printf("dstsize: %zu\n", dstsize);
-// 		// fflush(stdout);
-// 		*dst = (char *) malloc((dstsize + 1) * sizeof(char));
-// 		while (src[i] != '\0' && i < dstsize)
-// 		{
-// 			*(*dst + i) = src[i];
-// 			i++;
-// 		}
-// 		*(*dst + i) = '\0';
-// 	}
-// 	while (src[i] != '\0')
-// 		i++;
-// 	return ((size_t) i);
-// }
 
 char	*ft_strjoin(char const *pre, char const *post, t_bool free_pre, t_bool free_post)
 {
@@ -81,7 +59,7 @@ void	ft_strcpy(char *dst, char *src)
 	dst[i] = src[i];
 }
 
-void ft_strlcpy(char **dst, char *src, int dst_len)
+void	ft_strlcpy(char **dst, char *src, int dst_len)
 {
 	int	i;
 	int	dstsize;

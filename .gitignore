@@ -1,1 +1,3 @@
-gnlTester/*
+.*
+*.o
+gnlTester
