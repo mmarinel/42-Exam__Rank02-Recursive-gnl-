@@ -38,7 +38,7 @@ So, how to make our get_next_line more efficient? Think about it for a second, w
 
 So, a possible solution is this: whenever we are heading towards a next recursive call, we increase our buffer size by a **small** constant value so to decrease the probability of going recursively again with the next call!
 
-Anyway, when we are done reading the next line, we may have reached a fairly big buffer size, and it is for this very reason that with every new call we reset our "true" buffer size with the value of the homonymous macro (BUFFER_SIZE) which we set to a default of 42.
+Anyway, when we are done reading the next line, we may have reached a fairly big buffer size, and it is for this very reason that with every new call to the get_next_line function (from which the recursive *process* starts) we reset our "true" buffer size with the value of the homonymous macro (BUFFER_SIZE) which we set to a default of 42.
 
 This idea comes from the [TCP](https://en.wikipedia.org/wiki/Transmission_Control_Protocol) protocol. This protocol allows for a reliable transmission of data (i.e.: every packet is guaranteed to be received by the recipient and in the order it was sent with respect to all other packets).
 One of the many things that TCP does is the so called "congestion control" [Rfc 5681](https://www.rfc-editor.org/rfc/rfc5681).
