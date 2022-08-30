@@ -5,7 +5,7 @@ This is my solution to the get_next_line problem of the 42 exam Rank-02.
 The exam version of such problem is the equivalent of the mandatory-only part of the homonymous project of the 42cursus common-core.
 For a detailed explanation of the problem you can read the [Subject](en.subject.pdf) present in this repo. (essentially, the problem is about reading files one line at the time).
 
-**I solved this problem in a recursive fashion**. Executing this program against the [Tripouille tester]( https://github.com/Tripouille/gnlTester ) inside VS CODE's integrated terminal may show you some TIMEOUTS: **execute this program in your own machine's terminal and you'll be ok!**
+**I solved this problem in a recursive fashion**. On old and slow machines, executing this program against the [Tripouille tester]( https://github.com/Tripouille/gnlTester ) inside VS CODE's integrated terminal may show you some TIMEOUTS: **execute this program in your own machine's terminal and you'll be ok!**
 
 # Explanation of my thought process.
 
